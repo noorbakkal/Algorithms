@@ -80,10 +80,10 @@ namespace Algorithms
                     SortAlgorithmList1.Items.Clear();
                     AlgorithmTime1.Text = "";
                     var stopWatch1 = Stopwatch.StartNew();
-                    List<string> algorithms2 = new List<string>();
-                    algorithms2 = Tools.ShowMethodNames();
+                    List<string> algorithmsMethods1 = new List<string>();
+                    algorithmsMethods1 = Tools.ShowMethodNames();
                     // replace switch statment with this for loop
-                    foreach (string item in algorithms2)
+                    foreach (string item in algorithmsMethods1)
                     {
                         if (alg1 == item)
                         {
@@ -121,36 +121,30 @@ namespace Algorithms
                     SortAlgorithmList2.Items.Clear();
                     AlgorithmTime2.Text = "";
                     var stopWatch2 = Stopwatch.StartNew();
-                    switch (alg2)
+                    List<string> algorithmsMethods2 = new List<string>();
+                    algorithmsMethods2 = Tools.ShowMethodNames();
+                    // replace switch statment with this for loop
+                    foreach (string item in algorithmsMethods2)
                     {
-                        case "MergeSort":
-                            result2 = sortAlgorithms2.MergeSort(arrayToSort, 0, arrayToSort.Count - 1);
-                            for (int x = 0; x < result2.Count; x++)
+                        if (alg2 == item)
+                        {
+                            MethodInfo method = typeof(SortAlgorithms).GetMethod(item);
+                            String[] param = method.GetParameters()
+                              .Select(p => String.Format("{0} {1}", p.ParameterType.Name, p.Name))
+                              .ToArray();
+                            if (param.Length > 1)
                             {
-                                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
-                                SortAlgorithmList2.Items.Add(result2[x]);
-                                Thread.Yield();
+                                result2 = (List<int>)method.Invoke(sortAlgorithms, new object[] { arrayToSort, 0, arrayToSort.Count - 1 });
                             }
-                            break;
-                        case "BubbleSort":
-                            result2 = sortAlgorithms2.BubbleSort(arrayToSort);
-                            for (int x = 0; x < result2.Count; x++)
-                            {
-                                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
-                                SortAlgorithmList2.Items.Add(result2[x]);
-                                Thread.Yield();
-                            }
-                            break;
-                        case "CombSort":
-                            result2 = sortAlgorithms.CombSort(arrayToSort);
-                            for (int x = 0; x < result2.Count; x++)
-                            {
-                                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
-                                SortAlgorithmList2.Items.Add(result2[x]);
-                                Thread.Yield();
-                            }
-                            break;
+                            else result2 = (List<int>)method.Invoke(sortAlgorithms, new object[] { arrayToSort });
 
+                            for (int x = 0; x < result2.Count; x++)
+                            {
+                                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
+                                SortAlgorithmList2.Items.Add(result2[x]);
+                                Thread.Yield();
+                            }
+                        }
                     }
                     stopWatch2.Stop();
                     AlgorithmTime2.Text += stopWatch2.ElapsedMilliseconds - (time * (arrayToSort.Count - 1)) - time; 
