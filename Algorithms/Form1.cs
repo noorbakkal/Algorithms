@@ -141,7 +141,7 @@ namespace Algorithms
                             for (int x = 0; x < result2.Count; x++)
                             {
                                 System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(time));
-                                SortAlgorithmList2.Items.Add(result2[x]);
+                                SortAlgorithmList2.Items.Add(result2[x]); 
                                 Thread.Yield();
                             }
                         }
